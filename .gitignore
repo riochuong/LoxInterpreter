@@ -1,0 +1,50 @@
+# IDE and OS specific files
+.DS_Store
+.AppleDouble
+.LSOverride
+*.swp
+*.swo
+*.vscode
+*.idea
+*.vs
+*.vscode
+*.sublime-project
+*.sublime-workspace
+
+# Build directories
+bin/
+obj/
+build/
+debug/
+release/
+
+# Compiled Static libraries
+*.lai
+*.la
+*.a
+*.lib
+
+# Executables
+*.exe
+*.out
+*.app
+
+# Prerequisites
+*.d
+
+# Compiled Object files
+*.slo
+*.lo
+*.o
+*.obj
+
+# Precompiled Headers
+*.gch
+*.pch
+
+# Compiled Dynamic libraries
+*.so
+*.dylib
+*.dll
+
+
