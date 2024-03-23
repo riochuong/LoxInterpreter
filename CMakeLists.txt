@@ -20,6 +20,7 @@ include_directories(${spdlog_SOURCE_DIR}/include)
 
 add_library(lexer_lib STATIC 
     src/lexer.cpp
+    src/lox_interpreter.cpp
 )
 target_link_libraries(lexer_lib spdlog::spdlog)
 
