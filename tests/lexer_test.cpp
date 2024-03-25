@@ -46,6 +46,19 @@ TEST(LexerBasicTest, SimpleVariableAssignment) {
 
 }
 
+static void verify_lexer_from_expected_list(std::vector<Token> tokens, std::vector<std::pair<std::string, TokenType>> expected_results){
+    for (auto &token: tokens){
+        spdlog::debug("{}", token.lexeme);
+    }
+    EXPECT_EQ(tokens.size(), expected_results.size());
+    for (int i = 0; i < tokens.size(); i++){
+        spdlog::debug("Item {} lexeme expected {} received {}", i, tokens[i].lexeme, expected_results.at(i).first);
+        spdlog::debug("Item {} type expected {} received {}", i, tokens[i].type, expected_results.at(i).second);
+        EXPECT_EQ(tokens[i].lexeme, expected_results.at(i).first);
+        EXPECT_EQ(tokens[i].type, expected_results.at(i).second);
+    }
+}
+
 TEST(LexerBasicTest, ForLoopBasic) {
     
     auto source = R"(
@@ -96,16 +109,141 @@ TEST(LexerBasicTest, ForLoopBasic) {
     };
     Lexer lexer { source };
     auto tokens = lexer.scan_tokens();
-    for (auto &token: tokens){
-        spdlog::debug("{}", token.lexeme);
-    }
-    EXPECT_EQ(tokens.size(), expected_results.size());
-    for (int i = 0; i < tokens.size(); i++){
-        spdlog::debug("Item {} lexeme expected {} received {}", i, tokens[i].lexeme, expected_results.at(i).first);
-        spdlog::debug("Item {} type expected {} received {}", i, tokens[i].type, expected_results.at(i).second);
-        EXPECT_EQ(tokens[i].lexeme, expected_results.at(i).first);
-        EXPECT_EQ(tokens[i].type, expected_results.at(i).second);
-    }
+    verify_lexer_from_expected_list(tokens, expected_results);
+    
+    // for (auto &token: tokens){
+    //     spdlog::debug("{}", token.lexeme);
+    // }
+    // EXPECT_EQ(tokens.size(), expected_results.size());
+    // for (int i = 0; i < tokens.size(); i++){
+    //     spdlog::debug("Item {} lexeme expected {} received {}", i, tokens[i].lexeme, expected_results.at(i).first);
+    //     spdlog::debug("Item {} type expected {} received {}", i, tokens[i].type, expected_results.at(i).second);
+    //     EXPECT_EQ(tokens[i].lexeme, expected_results.at(i).first);
+    //     EXPECT_EQ(tokens[i].type, expected_results.at(i).second);
+    // }
+}
+
+
+TEST(LexerBasicTest, WhileLoopBasic) {
+    auto source = R"(
+        var a = 1;
+        var b = 2;
+        var c = 0;
+        while(a <= 10){
+            a = a + 1;
+            if b != 0 {
+                a = a + 2;
+            } else {
+                a = a * 1;
+            }
+            if c >= 0{
+                c = c - 1;
+            }
+            if !(a == b) or (b <= c){
+                print("test");
+            } 
+        }
+    )";
+
+    
+
+    std::vector<std::pair<std::string, TokenType>> expected_results = {
+        {"var",       VAR},
+        {"a",       IDENTIFIER},
+        {"=",       EQUAL},
+        {"1",       NUMBER},
+        {";",       SEMICOLON},
+        {"var",       VAR},
+        {"b",   IDENTIFIER},
+        {"=",       EQUAL},
+        {"2",      NUMBER},
+        {";",       SEMICOLON},
+        {"var",       VAR},
+        {"c",       IDENTIFIER},
+        {"=",       EQUAL},
+        {"0",       NUMBER},
+        {";",       SEMICOLON},
+        {"while",      WHILE},
+        {"(",      LEFT_PAREN},
+        {"a",      IDENTIFIER},
+        {"<=",      LESS_EQUAL}, 
+        {"10",      NUMBER},
+        {")",       RIGHT_PAREN},
+        {"{",      LEFT_BRACE},
+        {"a",      IDENTIFIER},
+        {"=",      EQUAL},
+        {"a",       IDENTIFIER},
+        {"+",      PLUS},
+        {"1",      NUMBER},
+        {";",      SEMICOLON},
+        {"if",      IF},
+        {"b",      IDENTIFIER},
+        {"!=",      BANG_EQUAL},
+        {"0",      NUMBER},
+        {"{",      LEFT_BRACE},
+        {"a",      IDENTIFIER},
+        {"=",      EQUAL},
+        {"a",      IDENTIFIER},
+        {"+",      PLUS},
+        {"2",       NUMBER},
+        {";",      SEMICOLON},
+        {"}",      RIGHT_BRACE},
+        {"else",      ELSE},
+        {"{",      LEFT_BRACE},
+        {"a",      IDENTIFIER},
+        {"=",      EQUAL},
+        {"a",      IDENTIFIER},
+        {"*",      STAR},
+        {"1",      NUMBER},
+        {";",      SEMICOLON},
+        {"}",      RIGHT_BRACE},
+        {"if",      IF},
+        {"c",      IDENTIFIER},
+        {">=",      GREATER_EQUAL},
+        {"0",      NUMBER},
+        {"{",      LEFT_BRACE},
+        {"c",      IDENTIFIER},
+        {"=",      EQUAL},
+        {"c",      IDENTIFIER},
+        {"-",      MINUS},
+        {"1",      NUMBER},
+        {";",      SEMICOLON},
+        {"}",      RIGHT_BRACE},
+        {"if",      IF},
+        {"!",      BANG},
+        {"(",      LEFT_PAREN},
+        {"a",      IDENTIFIER},
+        {"==",      EQUAL_EQUAL},
+        {"b",      IDENTIFIER},
+        {")",      RIGHT_PAREN},
+        {"or",      OR},
+        {"(",      LEFT_PAREN},
+        {"b",      IDENTIFIER},
+        {"<=",      LESS_EQUAL},
+        {"c",      IDENTIFIER},
+        {")",      RIGHT_PAREN},
+        {"{",      LEFT_BRACE},
+        {"print",      PRINT},
+        {"(",      LEFT_PAREN},
+        {"\"test\"",     STRING},
+        {")",     RIGHT_PAREN},
+        {";",     SEMICOLON},
+        {"}",      RIGHT_BRACE},
+        {"}",      RIGHT_BRACE},
+        {"",      EndOfFile},
+    };
+
+    Lexer lexer { source };
+    auto tokens = lexer.scan_tokens();
+    verify_lexer_from_expected_list(tokens, expected_results);
+}
+
+TEST(LexerBasicTest, BasicClassDeclaration) {
+    auto source = R"(
+        class Parent {
+            
+        };
+    })";
 }
 
 int main(int argc, char** argv) {

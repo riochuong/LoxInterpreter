@@ -148,31 +148,5 @@ std::vector<Token> Lexer::scan_tokens(){
 
     tokens_.push_back(Token(EndOfFile, "", nullptr, line_));
     return tokens_;
-    
 
-    // std::vector<std::string> tokens; 
-    // std::ifstream input_file (filepath, std::ios::in);
-    // if (!input_file.is_open()){
-    //     spdlog::error("Failed to open file with error {}", strerror(errno));
-    //     return tokens;
-    // }
-
-    // std::string line;
-    // while(std::getline(input_file, line)){
-    //     std::stringstream ss(line);
-    //     std::string token;
-    //     while(std::getline(ss, token, ' ')){
-    //         //remove_if move all non_whitespaces to front and return the pointer to the last 
-    //         // white space that can be remove
-    //         token.erase(std::remove_if(token.begin(), token.end(), ::isspace), token.end());
-    //         if (token.size()){
-    //             tokens.push_back(token);
-    //         }
-    //     }
-    // }
-    // input_file.close();
-    // return tokens;
-
-
-    
 }
