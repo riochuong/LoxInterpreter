@@ -3,12 +3,15 @@
 #include <token_type.h>
 #include <any>
 
+namespace Interpreter
+{
 
-class Lexer {    
+    class Lexer {
     public:
         std::vector<Token> scan_tokens();
         bool is_at_end();
-        Lexer(std::string source): source_(source) {}
+        Lexer(std::string source) : source_(source) {}
+
     private:
         std::vector<Token> tokens_;
         std::string source_;
@@ -17,7 +20,7 @@ class Lexer {
         int line_ = 1;
 
         void scan_token();
-        void add_token(TokenType token_type); 
+        void add_token(TokenType token_type);
         void add_token(TokenType token_type, std::any literal);
         bool match(char c);
         char peek();
@@ -25,6 +28,5 @@ class Lexer {
         void string();
         void number();
         void identifier();
-
-
-};
+    };
+}

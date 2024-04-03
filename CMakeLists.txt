@@ -22,7 +22,11 @@ add_library(lexer_lib STATIC
     src/lexer.cpp
     src/lox_interpreter.cpp
 )
+add_library(gen_syntax_tree_lib STATIC 
+    src/gen_syntax_tree.cpp
+)
 target_link_libraries(lexer_lib spdlog::spdlog)
+target_link_libraries(gen_syntax_tree_lib spdlog::spdlog)
 
 # Add the tests
 enable_testing()

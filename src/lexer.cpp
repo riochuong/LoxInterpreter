@@ -8,6 +8,8 @@
 #include <lox_interpreter.h>
 #include <lexer.h>
 
+using namespace Interpreter;
+
 static bool is_digit(char c){
     return (c >= '0') && (c <= '9');
 }

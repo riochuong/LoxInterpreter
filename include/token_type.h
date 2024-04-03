@@ -57,6 +57,11 @@ class Token {
                                                                 
             // TODO: might need to do some type casting here for void*
         }
+
+        Token(const Token& other):type(other.type), 
+                                  lexeme(other.lexeme), 
+                                  literal(other.literal),
+                                  line(other.line) {}
                                                         
 
         // Overload the << operator to provide a "toString()" functionality

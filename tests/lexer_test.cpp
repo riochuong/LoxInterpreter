@@ -4,20 +4,9 @@
 #include <spdlog/spdlog.h>
 #include <utility>
 #include <vector>
+#include "common.h"
 
-#define TEST_LOGGER "gtest_logger"
-auto LOG_LEVEL = spdlog::level::debug;
-
-class GlobalSetup : public ::testing::Environment {
-public:
-    void SetUp() override {
-        spdlog::set_level(LOG_LEVEL);
-    }
-
-    void TearDown() override {
-       
-    }
-};
+using namespace Interpreter;
 
 TEST(LexerBasicTest, SimpleVariableAssignment) {
     Lexer lexer {"var a = 123; // this is the basic test "};
@@ -238,6 +227,7 @@ TEST(LexerBasicTest, WhileLoopBasic) {
     verify_lexer_from_expected_list(tokens, expected_results);
 }
 
+// TODO : FINISH THIS TEST 
 TEST(LexerBasicTest, BasicClassDeclaration) {
     auto source = R"(
         class Parent {
