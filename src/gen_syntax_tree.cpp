@@ -29,6 +29,7 @@ std::string Interpreter::define_visitor(std::string basename, std::vector<std::s
     std::string visitor_str = ""; 
     visitor_str += "    template<typename R>\n";
     visitor_str += "        class Visitor{\n";
+    visitor_str += "            public:\n";
     for(auto& type: types){
         size_t delim_pos = type.find(":");
         basename = strip(basename);
@@ -36,7 +37,7 @@ std::string Interpreter::define_visitor(std::string basename, std::vector<std::s
         std::string type_str_lower {strip(type.substr(0, delim_pos))};
         tolower_inplace(type_str_lower);
         tolower_inplace(basename);
-        visitor_str += "            virtual R visit_" + type_str_lower + "_" + basename + "(";
+        visitor_str += "                virtual R visit_" + type_str_lower + "_" + basename + "(";
         visitor_str += type_str + "<R>* " + basename +");\n"; 
     }
     visitor_str += "        };\n";
@@ -48,11 +49,11 @@ std::string Interpreter::define_type(std::string basename, std::string type, std
      std::string field;
      type = strip(type); 
      std::string constructor = "         " + type + "(";
-     std::string func = "         R accept(Visitor<R> visitor){\n";
+     std::string func = "         R accept(Visitor<R>* visitor){\n";
      std::vector <std::pair<std::string, std::string>> field_pairs;
      std::stringstream ss {field_list};
      res += "    template<typename R>\n";
-     res += "    class " + type + " : " + basename + "<R> {" +"\n";
+     res += "    class " + type + " : public " + basename + "<R> {" +"\n";
      res += "        public:\n";
      while (std::getline(ss, field, ',')){
             // stripped all spaces
@@ -91,7 +92,7 @@ std::string Interpreter::define_type(std::string basename, std::string type, std
      // construct func
      tolower_inplace(type);
      tolower_inplace(basename);
-     func += "              visitor.visit_"+type+"_"+basename+"(this);\n";
+     func += "              return visitor->visit_"+type+"_"+basename+"(this);\n";
      func += "         }\n";
      return res + constructor + func + "    };\n";     
 }
@@ -113,7 +114,8 @@ void Interpreter::define_abstract_syntax_tree(std::string basename, std::vector<
     of << "    class Visitor;\n";
     of << "    template<typename R>\n";
     of << "    class " << basename << " {\n";
-    of << "         virtual R accept(Visitor<R> visitor);\n";
+    of << "         public:\n";
+    of << "             virtual R accept(Visitor<R>* visitor);\n";
     of << "    };\n";
     of << define_visitor(basename, types);
     of << "\n";
