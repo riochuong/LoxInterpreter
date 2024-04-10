@@ -38,7 +38,7 @@ std::string Interpreter::define_visitor(std::string basename, std::vector<std::s
         tolower_inplace(type_str_lower);
         tolower_inplace(basename);
         visitor_str += "                virtual R visit_" + type_str_lower + "_" + basename + "(";
-        visitor_str += type_str + "<R>* " + basename +");\n"; 
+        visitor_str += type_str + "<R>* " + basename +") = 0;\n"; 
     }
     visitor_str += "        };\n";
     return visitor_str;
@@ -67,7 +67,7 @@ std::string Interpreter::define_type(std::string basename, std::string type, std
             }
             if (field_type == basename){
                 // need to add template type here 
-                field_type += "<R>";
+                field_type = "std::shared_ptr<"+field_type+"<R>>";
             }
             res += "         const " + field_type + "  " + field_name + ";\n";
             field_pairs.emplace_back(field_type, field_name);
@@ -115,7 +115,7 @@ void Interpreter::define_abstract_syntax_tree(std::string basename, std::vector<
     of << "    template<typename R>\n";
     of << "    class " << basename << " {\n";
     of << "         public:\n";
-    of << "             virtual R accept(Visitor<R>* visitor);\n";
+    of << "             virtual R accept(Visitor<R>* visitor) = 0;\n";
     of << "    };\n";
     of << define_visitor(basename, types);
     of << "\n";
