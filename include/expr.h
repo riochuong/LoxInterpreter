@@ -1,3 +1,4 @@
+#pragma once
 #include <token_type.h>
 #include<any>
 

@@ -7,8 +7,11 @@
 #include <token_type.h>
 
 namespace Interpreter{
+    class ParseError;
     class RecursiveDescentParser {
-        RecursiveDescentParser(std::vector<Token> tokens): tokens_(tokens) {}
+        public:
+            RecursiveDescentParser(std::vector<Token> tokens): tokens_(tokens) {}
+            std::shared_ptr<Expr> parse();
 
         private:
             const std::vector<Token> tokens_;
@@ -18,9 +21,11 @@ namespace Interpreter{
             bool match(std::initializer_list<TokenType> types);
             bool check(TokenType type);
             Token advance();
-            bool peek();
+            Token peek();
             bool is_at_end();
             Token previous();
+            Token consume(TokenType type, std::string error_msg);
+            ParseError error(Token token, std::string msg);
 
             // grammar rules 
             std::shared_ptr<Expr> comparison();
@@ -30,7 +35,5 @@ namespace Interpreter{
             std::shared_ptr<Expr> factor();
             std::shared_ptr<Expr> unary();
             std::shared_ptr<Expr> primary();
-
-
     };
 }

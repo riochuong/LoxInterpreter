@@ -3,6 +3,7 @@
 #include <iostream>
 #include <memory>
 #include <expr.h>
+#include <rd_parser.h>
 
 using namespace Interpreter;
 

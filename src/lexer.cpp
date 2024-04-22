@@ -74,7 +74,7 @@ void Lexer::scan_token(){
                 identifier();
                 break;
             }
-            LoxInterpreter::error(line_, "Unexpected character"); break;
+            LoxInterpreter::error(line_, "Unexpected character"); 
     }
 }
 

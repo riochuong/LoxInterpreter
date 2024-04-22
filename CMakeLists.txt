@@ -20,6 +20,7 @@ include_directories(${spdlog_SOURCE_DIR}/include)
 
 add_library(lexer_lib STATIC 
     src/lexer.cpp
+    src/rd_parser.cpp
     src/lox_interpreter.cpp
 )
 add_library(gen_syntax_tree_lib STATIC 
