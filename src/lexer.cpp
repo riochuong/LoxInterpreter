@@ -106,7 +106,7 @@ void Lexer::string(){
     while(!is_at_end() && peek() != '"'){
         current_++;
     }
-    std::string literal { source_.substr(start_ + 1,  current_ - start_)};
+    std::string literal { source_.substr(start_,  current_ - start_ + 1)};
     current_++;
     add_token(STRING, literal);
 }

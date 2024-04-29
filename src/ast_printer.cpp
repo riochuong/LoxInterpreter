@@ -24,6 +24,9 @@ std::any AstPrinter::visit_literal_expr(const Literal &expr){
     try {
         return std::to_string(std::any_cast<int>(expr.value));
     } catch (const std::bad_any_cast&) {}
+    try {
+        return std::to_string(std::any_cast<bool>(expr.value));
+    } catch (const std::bad_any_cast&) {}
     throw std::runtime_error("Unsupported Literal Type !!"); 
 
 
