@@ -43,20 +43,20 @@ std::shared_ptr<Expr> RecursiveDescentParser::comparison(){
 
 
 std::shared_ptr<Expr> RecursiveDescentParser::term(){
-    std::shared_ptr<Expr> expr = this->unary();
-    while(match({LESS_EQUAL, LESS, GREATER_EQUAL, GREATER})){
+    std::shared_ptr<Expr> expr = this->factor();
+    while(match({MINUS, PLUS})){
         Token op = this->previous();
-        std::shared_ptr<Expr> right = this->unary();
+        std::shared_ptr<Expr> right = this->factor();
         expr = std::make_shared<Binary>(expr, op, right);
     }
     return expr;
 }
 
 std::shared_ptr<Expr> RecursiveDescentParser::factor(){
-    std::shared_ptr<Expr> expr = this->factor();
-    while(match({MINUS, PLUS})){
+    std::shared_ptr<Expr> expr = this->unary();
+    while(match({STAR, SLASH})){
         Token op = this->previous();
-        std::shared_ptr<Expr> right = this->factor();
+        std::shared_ptr<Expr> right = this->unary();
         expr = std::make_shared<Binary>(expr, op, right);
     }
     return expr;

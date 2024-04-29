@@ -22,18 +22,14 @@ add_library(lexer_lib STATIC
     src/lexer.cpp
     src/rd_parser.cpp
     src/lox_interpreter.cpp
+    src/ast_printer.cpp
 )
 add_library(gen_syntax_tree_lib STATIC 
     src/gen_syntax_tree.cpp
 )
 
-add_executable(ast_printer 
-      src/ast_printer.cpp
-)
-
 target_link_libraries(lexer_lib spdlog::spdlog)
 target_link_libraries(gen_syntax_tree_lib spdlog::spdlog)
-target_link_libraries(ast_printer lexer_lib)
 
 # Add the tests
 enable_testing()
