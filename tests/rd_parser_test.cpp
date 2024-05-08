@@ -7,6 +7,7 @@
 #include <lexer.h>
 #include <rd_parser.h>
 #include <ast_printer.h>
+#include <lox_interpreter.h>
 #include "common.h"
 
 using namespace Interpreter;
@@ -20,6 +21,8 @@ TEST(RdParserBasicExpressionTest, TestBasicExpressionsParsing) {
         "(2 * 3) + (4 / 2) <= 100 - 5 - 4",
         "!true == false == !true"
     };
+    LoxInterpreter interperter {};
+    LoxInterpreter::had_runtime_error = false;
     for (auto& s: sources){
         Lexer lexer { s };
         auto tokens = lexer.scan_tokens();
@@ -30,7 +33,10 @@ TEST(RdParserBasicExpressionTest, TestBasicExpressionsParsing) {
         EXPECT_TRUE(expr != nullptr);
         spdlog::info("Expr: {}", printer.print(*expr));
         expr = parser.parse();
+        interperter.interpret(*expr);
     }
+    // incorporate interpreter 
+
 }
 
 int main(int argc, char** argv) {

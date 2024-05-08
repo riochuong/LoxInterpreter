@@ -82,7 +82,7 @@ std::shared_ptr<Expr> RecursiveDescentParser::primary(){
         consume(RIGHT_PAREN, "Failed to consume right parenthese !");
         return std::make_shared<Grouping>(expr);
     }
-    throw error(peek(), "Expect expression but current is lexeme "+peek().lexeme); 
+    throw error(peek(), "Expect expression but current is lexeme " + peek().lexeme); 
 }
 
 bool RecursiveDescentParser::match(std::initializer_list<TokenType> types)
